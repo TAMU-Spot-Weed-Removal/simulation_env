@@ -13,7 +13,7 @@ Comment the first line and uncomment the second line
 
 # 4. In the root directory, run catkin_make
 
-# 5. launch simulation.launch
+# 5. launch simulation.launch and adjust the Spot pose
 
 # 6. In another terminal, launch weeding_arm_sim.launch
 
