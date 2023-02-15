@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>spot_gazebo</name>
+  <version>0.0.0</version>
+  <description>The spot_gazebo package</description>
+
+  <maintainer email="sample@gmail.com">Chengsong Hu</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>champ</depend>
+  <depend>champ_msgs</depend>
+  <exec_depend>roslaunch</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo_ros_pkgs</exec_depend>
+  <exec_depend>gazebo_ros_control</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
+  <exec_depend>ros_controllers</exec_depend>
+
+</package>

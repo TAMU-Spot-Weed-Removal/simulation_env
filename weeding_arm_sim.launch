@@ -1,0 +1,11 @@
+<launch> 
+    <param name="/use_sim_time" value="true"/>
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="camera_to_arm_end_point_tf" args="0.06 -0.04 -0.04 -1.570796 0.0 -1.570796 arm_end_point camera 100" /> -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="torch_to_arm_end_point_tf" args="0.2 0 0 0 0 0 arm_end_point torch 100" /> -->
+    <node pkg="tf" type="static_transform_publisher" name="camera_to_arm_end_point_tf" args="0.04931 0.02749 -0.03655 -0.502588992365 0.497824846178 -0.479412986524 0.519362990244 arm_end_point camera 100" />
+    <node pkg="tf" type="static_transform_publisher" name="torch_to_camera_tf" args="0.03484948836312, -0.09639543629435, 0.18531637578555 0.075422378518648 0.01528750950022 0.001156450579576 0.997033810607207 camera torch 100" />
+    <include file="$(find arm_control)/launch/arm_control.launch"/>
+
+    <node pkg="z1_controller" type="run.sh" name="run_z1_ctrl" output="screen"/>
+</launch>

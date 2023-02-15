@@ -1,0 +1,11 @@
+<launch> 
+    <param name="/use_sim_time" value="true"/>
+
+    <include file="$(find arm_control)/launch/calibration.launch">
+        <arg name="camera_info_topic" value="/stereo_camera/left/camera_info"/>
+        <arg name="image_topic" value="/stereo_camera/left/image_raw"/>
+        <arg name="pointcloud_topic" value="/stereo_camera/points2"/>
+    </include>
+
+    <node pkg="z1_controller" type="run.sh" name="run_z1_ctrl" output="screen"/>
+</launch>

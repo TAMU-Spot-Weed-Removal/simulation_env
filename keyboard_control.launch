@@ -1,0 +1,5 @@
+<launch> 
+    <include file="$(find arm_control)/launch/keyboard_control.launch"/>
+
+    <node pkg="z1_controller" type="run.sh" name="run_z1_ctrl" output="screen"/>
+</launch>
