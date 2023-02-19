@@ -22,3 +22,8 @@ source ./devel/setup.bash
 # 6. In another terminal, launch weeding_arm_sim.launch
 
 
+A Docker image that has all the dependencies for running this simulation_env:
+```
+docker pull entao2000/spot_simulation
+docker run --name spot_test -it -v `pwd`/rootfs:/root/rootfs -p 5901:5901 -p 6080:6080 -p 8888:8888 entao2000/spot_simulation 
+```
