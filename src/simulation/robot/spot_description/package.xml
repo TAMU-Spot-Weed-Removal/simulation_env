@@ -4,18 +4,17 @@
   <version>0.0.0</version>
   <description>The spot_description package</description>
 
-  <maintainer email="sample@gmail.com">Chengsong Hu</maintainer>
+  <maintainer email="dniewinski@clearpathrobotics.com">Dave Niewinski</maintainer>
 
-  <license>TODO</license>
+  <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>urdf</build_depend>
-  <build_depend>xacro</build_depend>
-  <build_export_depend>urdf</build_export_depend>
-  <build_export_depend>xacro</build_export_depend>
-  <exec_depend>urdf</exec_depend>
-  <exec_depend>xacro</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>urdf</exec_depend>
+  <exec_depend>velodyne_description</exec_depend>
+  <exec_depend>xacro</exec_depend>
 
+  <export>
+  </export>
 </package>

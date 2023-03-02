@@ -28,3 +28,10 @@ docker pull entao2000/spot_simulation
 docker run --name spot_test -it -v `pwd`/rootfs:/root/rootfs -p 5901:5901 -p 6080:6080 -p 8888:8888 entao2000/spot_simulation 
 ```
 Then, Clone z1_controller and arm_control repository into the src folder, and follow steps from 1 to 6
+
+
+
+```
+roslaunch spot_driver driver.launch
+```
+open a new panel named SpotControlPanel in rviz

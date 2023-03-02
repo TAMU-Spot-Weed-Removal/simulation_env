@@ -1,73 +1,84 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:property name="M_PI" value="3.1415926535897931" />
-    <xacro:include filename="$(find spot_description)/urdf/constants.urdf.xacro" />
-    <xacro:include filename="$(find spot_description)/urdf/asus_camera.urdf.xacro" />
-    <xacro:include filename="$(find spot_description)/urdf/generic_stereo_camera.urdf.xacro" />
-    <!-- 
-    <xacro:asus_camera parent="base_link" name="camera">
-        <origin xyz="${base_length / 2} 0.0 ${base_height / 2 - 0.01}" rpy="0 ${M_PI/12} 0"/>
-    </xacro:asus_camera>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:generic_stereo_camera parent="base_link" name="stereo_camera" ros_topic="image_raw" cam_info_topic="camera_info" 
-                                 update_rate="30" height="480" width="640" image_format="R8G8B8" hfov="2.094395102" baseline="0.08" focal_length="184.7520861">
-        <origin xyz="${base_length / 2} 0.0 ${base_height / 2 - 0.01}" rpy="0 ${M_PI/12} 0"/>
-    </xacro:generic_stereo_camera>
-    -->
-    <gazebo>
-        <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
-            <updateRate>50.0</updateRate>
-            <bodyName>imu_link</bodyName>
-            <topicName>imu/data</topicName>
-            <accelDrift>0.005 0.005 0.005</accelDrift>
-            <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
-            <rateDrift>0.005 0.005 0.005 </rateDrift>
-            <rateGaussianNoise>0.005 0.005 0.005 </rateGaussianNoise>
-            <headingDrift>0.005</headingDrift>
-            <headingGaussianNoise>0.005</headingGaussianNoise>
-        </plugin>
-    </gazebo>
+  <xacro:if value="$(optenv SPOT_PACK 0)">
+    <joint name="pack_mount_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="pack_mount"/>
+      <origin xyz="-0.019986 0 0.093662" rpy="0 0 0"/>
+    </joint>
 
-    <link name="imu_link">
-        <inertial>
-            <mass value="0.001"/>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <inertia ixx="1e-09" ixy="0.0" ixz="0.0" iyy="1e-09" iyz="0.0" izz="1e-09"/>
-        </inertial>
+    <link name="pack_mount">
+      <visual>
+        <geometry>
+          <mesh filename="package://spot_description/meshes/pack_top.dae"/>
+        </geometry>
+      </visual>
+      <visual>
+        <geometry>
+          <mesh filename="package://spot_description/meshes/pack_body.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://spot_description/meshes/pack_body.dae"/>
+        </geometry>
+      </collision>
     </link>
-    <joint name="imu_joint" type="fixed">
-        <parent link="base_link" />
-        <child link="imu_link" />
+  </xacro:if>
+
+  <xacro:if value="$(optenv SPOT_LIDAR_MOUNT 0)">
+    <joint name="lidar_mount_joint" type="fixed">
+      <parent link="pack_mount"/>
+      <child link="lidar_mount"/>
+      <origin xyz="0.015 0 0.149285" rpy="0 0 0"/>
     </joint>
 
-    <!-- <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
-    <xacro:VLP-16 parent="base_link" name="velodyne" topic="velodyne_points" hz="10" samples="1024" gpu="false" lasers="16" max_range="100">
-        <origin xyz="0.29 0 ${(base_height / 2) - 0.01}" rpy="0 0 0" />
-    </xacro:VLP-16> -->
-    <link name="camera_link">
+    <link name="lidar_mount">
+      <visual>
+        <geometry>
+          <mesh filename="package://spot_description/meshes/lidar_mount.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://spot_description/meshes/lidar_mount_collision.stl"/>
+        </geometry>
+      </collision>
     </link>
-    <joint name="camera_joint" type="fixed">
-        <parent link="link06" />
-        <child link="camera_link" />
-    </joint>
-    <xacro:generic_stereo_camera parent="camera_link" name="stereo_camera" ros_topic="image_raw" cam_info_topic="camera_info" 
-                                 update_rate="30" height="480" width="640" image_format="R8G8B8" hfov="2.094395102" baseline="0.08" focal_length="184.7520861">
-        <origin xyz="0.09 0.0 -0.05" rpy="0 0 0"/>
-    </xacro:generic_stereo_camera>
 
+    <xacro:if value="$(optenv SPOT_VELODYNE 0)">
+      <!-- Use the Velodyne macro for the actual sensor -->
+      <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro" />
+      <xacro:VLP-16 parent="lidar_mount">
+        <origin xyz="$(optenv SPOT_VELODYNE_XYZ 0 0 0)" rpy="$(optenv SPOT_VELODYNE_RPY 0 0 0)" />
+      </xacro:VLP-16>
 
-    <!-- torch -->
-    <joint name="$torch_joint" type="fixed">
-        <origin xyz="0.06 0.0 0.05" rpy="0 0 0"/>
-        <parent link="link06"/>
-        <child link="torch_frame"/>
-    </joint>
-    <link name="torch_frame">
+      <!-- Add the protective cage -->
+      <link name="velodyne_cage">
         <visual>
-            <origin xyz="0 0 0" rpy="0 ${-M_PI/2.0} ${M_PI}" />
-            <geometry>
-                <mesh filename="package://spot_description/meshes/torch.stl" scale="1 1 1"/>
-            </geometry>
+          <geometry>
+            <mesh filename="package://spot_description/meshes/velodyne_cage.stl" scale="0.001 0.001 0.001" />
+          </geometry>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <material name="black" />
         </visual>
-    </link>
+        <collision>
+          <geometry>
+            <mesh filename="package://spot_description/meshes/velodyne_cage.stl" scale="0.001 0.001 0.001" />
+          </geometry>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+      </link>
+      <joint name="velodyne_cage_joint" type="fixed">
+        <parent link="lidar_mount" />
+        <child link="velodyne_cage" />
+        <origin xyz="$(optenv SPOT_VELODYNE_XYZ 0 0 0)" rpy="$(optenv SPOT_VELODYNE_RPY 0 0 0)" />
+      </joint>
+    </xacro:if>
+  </xacro:if>
+
+  <xacro:if value="$(optenv SPOT_ARM 0)">
+    <xacro:include filename="$(find spot_description)/urdf/spot_arm.xacro" />
+  </xacro:if>
 </robot>
