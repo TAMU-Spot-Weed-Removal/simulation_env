@@ -18,8 +18,23 @@ source ./devel/setup.bash
 ```
 
 # 5. launch simulation.launch and adjust the Spot pose
+```
+roslaunch simulation.launch
+```
 
 # 6. In another terminal, launch weeding_arm_sim.launch
+```
+roselaunch weeding_arm_sim.launch
+```
+Then follow the arm_control repository
+
+# Stand up Spot and move
+
+Change the pose of '/' in gazebo pitch, yaw, roll to 0, 0, 0. Try multiple times until it works.
+```
+# this command make us move Spot with keyboards
+roslaunch champ_teleop teleop.launch
+```
 
 
 # A Docker image that has all the dependencies for running this simulation_env:
