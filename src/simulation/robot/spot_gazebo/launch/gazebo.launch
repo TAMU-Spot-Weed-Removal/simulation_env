@@ -10,7 +10,8 @@
     <arg name="gazebo_world"           default="$(find spot_gazebo)/worlds/field.world" />
     <arg name="world_init_x"           default="0.0" />
     <arg name="world_init_y"           default="0.0" />
-    <arg name="world_init_z"           default="0.5" />
+    <arg name="world_init_z"          default="0.2" />
+    <arg name="world_init_heading"    default="0.0" />
     <arg name="enable_contact_sensor"  default="true" />
     <arg name="respawn_controller"     default="false"/>
     <arg name="UnitreeGripperYN"       default="false"/>
@@ -26,6 +27,7 @@
     <arg name="has_imu"                default="true" />
     <arg name="gazebo"                 default="true"/>
     <arg name="rviz"                   default="true"/>
+    <arg name="lite"               default="false" />  <!-- Set to true if you're using CHAMP lite version. Only useful for microcontrollers. -->
     <arg name="publish_odom_tf"        default="true" />
     <arg name="publish_local_odom_tf"  default="true" />
     <arg name="run_state_estimation"   default="true" />
@@ -69,7 +71,7 @@
         <node  name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
             args="-urdf -model $(arg robot_name)  
             -param robot_description -robot_namespace $(arg robot_name)
-            -x $(arg world_init_x) -y $(arg world_init_y) -z $(arg world_init_z) 
+            -x $(arg world_init_x) -y $(arg world_init_y) -z $(arg world_init_z) -Y $(arg world_init_heading)
             -R 0.0 -P 0.0 -Y 0.0
             -J joint1 0.0
             -J joint2 0.01
@@ -78,7 +80,7 @@
             -J joint5 -0.1358
             -J joint6 0.0" />
 
-        <!-- ==================== Controllers ==================== -->
+        ==================== Controllers ====================
         <group if="$(arg UnitreeGripperYN)">
             <rosparam file="$(arg ros_control_file)" command="load"/>
         </group>

@@ -1,0 +1,41 @@
+load(
+    "@gz//bazel/skylark:build_defs.bzl",
+    "GZ_FEATURES",
+    "GZ_ROOT",
+    "GZ_VISIBILITY",
+    "gz_configure_header",
+    "gz_export_header",
+    "gz_include_header",
+)
+
+public_headers = glob([
+    "include/gz/math/eigen3/*.hh",
+])
+
+cc_library(
+    name = "eigen3",
+    srcs = public_headers,
+    hdrs = public_headers,
+    includes = ["include"],
+    visibility = GZ_VISIBILITY,
+    deps = [
+        GZ_ROOT + "math",
+        "@eigen3",
+    ],
+)
+
+test_sources = glob(
+    [
+        "src/*_TEST.cc",
+    ],
+)
+
+[cc_test(
+    name = src.replace("/", "_").replace(".cc", "").replace("src_", ""),
+    srcs = [src],
+    deps = [
+        ":eigen3",
+        "@gtest",
+        "@gtest//:gtest_main",
+    ],
+) for src in test_sources]

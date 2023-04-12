@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /root/rootfs/simulation_env/ign-math/build/devel/setup.sh
