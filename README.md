@@ -22,9 +22,8 @@ source ./devel/setup.bash
 roslaunch simulation.launch
 ```
 # Stand up Spot and move
-
 Change the pose of '/' in gazebo pitch, yaw, roll to 0, 0, 0. Try multiple times until it works.
-```
+
 
 # 6. In another terminal, launch weeding_arm_sim.launch, and follow example in arm_control repo to perform control
 ```
@@ -34,6 +33,7 @@ Then follow the arm_control repository
 
 
 # 7. this command make us move Spot with keyboards
+```
 roslaunch champ_teleop teleop.launch
 ```
 
